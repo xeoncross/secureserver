@@ -12,10 +12,19 @@ This configuration blocks major attacks like:
 - POODLE (SSLv3)
 - POODLE (TLS)
 - Heartbleed
+- CRIME
+- FUBAR
 - OpenSSL CCS vulnerability (CVE-2014-0224)
 - OpenSSL Padding Oracle vulnerability
 
-Achieving forward secrecy and low server load are also a focus.
+Achieving forward secrecy and low server load are a focus.
+
+## Reading
+
+- https://blog.bracebin.com/achieving-perfect-ssl-labs-score-with-go
+- https://blog.gopheracademy.com/advent-2016/exposing-go-on-the-internet/
+- https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
+- https://cipherli.st/
 
 ## Install
 
