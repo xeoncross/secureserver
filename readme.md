@@ -31,19 +31,19 @@ Achieving forward secrecy and low server load are also a focus.
     )
 
     func main() {
-    	domain := "example.com"
-    	secureserver.RunHTTPRedirectServer()
-    	s := secureserver.GetHTTPSServer(domain)
+      domain := "example.com"
+      secureserver.RunHTTPRedirectServer()
+      s := secureserver.GetHTTPSServer(domain)
 
       mux := http.NewServeMux()
-    	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-    		w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
-    		w.Write([]byte("This is an example server on " + domain + ".\n"))
-    	})
+      mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+        w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
+        w.Write([]byte("This is an example server on " + domain + ".\n"))
+      })
 
-    	s.Handler = mux
+      s.Handler = mux
 
-    	log.Fatal(s.ListenAndServeTLS("", ""))
+      log.Fatal(s.ListenAndServeTLS("", ""))
     }
 
 
@@ -58,9 +58,9 @@ You can quickly run a test HTTP/HTTPS server like so:
     )
 
     func main() {
-    	domain := "example.com"
-    	secureserver.RunHTTPRedirectServer()
-    	secureserver.RunDemoHTTPSServer(domain) // blocks
+      domain := "example.com"
+      secureserver.RunHTTPRedirectServer()
+      secureserver.RunDemoHTTPSServer(domain) // blocks
     }
 
 
