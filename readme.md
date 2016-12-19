@@ -25,6 +25,7 @@ Achieving forward secrecy and low server load are a focus.
 - https://blog.gopheracademy.com/advent-2016/exposing-go-on-the-internet/
 - https://blog.cloudflare.com/the-complete-guide-to-golang-net-http-timeouts/
 - https://cipherli.st/
+- https://wiki.mozilla.org/Security/Server_Side_TLS
 
 ## Install
 
