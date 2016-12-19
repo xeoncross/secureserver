@@ -69,7 +69,7 @@ func GetHTTPSServer(domain string) (s *http.Server) {
 		WriteTimeout: 10 * time.Second,
 		// IdleTimeout:  120 * time.Second, // go 1.8
 
-		Addr:      domain + ":443",
+		Addr:      ":443",
 		TLSConfig: TLSConfig(domain),
 
 		// Disable HTTP 2.0
