@@ -31,6 +31,22 @@ Achieving forward secrecy and low server load are a focus.
 
     go get github.com/xeoncross/secureserver
 
+## Demo Server
+
+You can quickly run a test HTTP/HTTPS server like so:
+
+    package main
+
+    import (
+      "github.com/xeoncross/secureserver"
+    )
+
+    func main() {
+      domain := "example.com"
+      HSTS := false // enable/disable HSTS
+      secureserver.RunHTTPRedirectServer()
+      secureserver.RunDemoHTTPSServer(domain, HSTS) // blocks
+    }
 
 ## Usage
 
@@ -56,22 +72,9 @@ Achieving forward secrecy and low server load are a focus.
       log.Fatal(s.ListenAndServeTLS("", ""))
     }
 
+# Todo
 
-## Demo Server
-
-You can quickly run a test HTTP/HTTPS server like so:
-
-    package main
-
-    import (
-      "github.com/xeoncross/secureserver"
-    )
-
-    func main() {
-      domain := "example.com"
-      secureserver.RunHTTPRedirectServer()
-      secureserver.RunDemoHTTPSServer(domain) // blocks
-    }
+- Implement support for [graceful shutdown](https://tip.golang.org/pkg/net/http/#Server.Shutdown)
 
 
 ## Contributions Required

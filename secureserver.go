@@ -10,6 +10,7 @@ import (
 )
 
 // CipherSuites without known attacks or extreme CPU usage
+// https://golang.org/src/crypto/tls/cipher_suites.go#L75
 var CipherSuites = []uint16{
 	tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
 	tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
@@ -25,19 +26,19 @@ var CipherSuites = []uint16{
 	tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
 	tls.TLS_RSA_WITH_AES_128_GCM_SHA256,
 
-	// tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
 	// tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
 	// tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
 	// tls.TLS_RSA_WITH_AES_256_CBC_SHA,
 }
 
 // Curves without known attacks or extreme CPU usage
+// https://golang.org/src/crypto/tls/common.go#L542
 var Curves = []tls.CurveID{
-	// tls.CurveP521,
-	// tls.CurveP384
 	// Only use curves which have assembly implementations
 	tls.CurveP256,
 	// tls.X25519, // Go 1.8 only
+	// tls.CurveP384,
+	// tls.CurveP521,
 }
 
 // TLSConfig for including autocert manager
@@ -72,8 +73,8 @@ func GetHTTPSServer(domain string) (s *http.Server) {
 		Addr:      ":443",
 		TLSConfig: TLSConfig(domain),
 
-		// Disable HTTP 2.0
-		// TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
+		// Disable HTTP/2 (until go 1.8)
+		TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
 	}
 
 	return s
@@ -95,12 +96,18 @@ func RunHTTPRedirectServer() (s *http.Server) {
 }
 
 // RunDemoHTTPSServer to demo a working example
-func RunDemoHTTPSServer(domain string) (s *http.Server) {
+func RunDemoHTTPSServer(domain string, HSTS bool) (s *http.Server) {
 	s = GetHTTPSServer(domain)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
+		if HSTS {
+			// Recomend HTTPS only for the next hour (just an example)
+			w.Header().Add("Strict-Transport-Security", "max-age=3600")
+
+			// Or for 1 year (also on all subdomains)
+			// w.Header().Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+		}
 		w.Write([]byte("This is an example server on " + domain + ".\n"))
 	})
 
