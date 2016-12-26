@@ -102,7 +102,7 @@ func RunDemoHTTPSServer(domain string, HSTS bool) (s *http.Server) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		if HSTS {
-			// Recomend HTTPS only for the next hour (just an example)
+			// Recommend HTTPS only for the next hour (just an example)
 			w.Header().Add("Strict-Transport-Security", "max-age=3600")
 
 			// Or for 1 year (also on all subdomains)
